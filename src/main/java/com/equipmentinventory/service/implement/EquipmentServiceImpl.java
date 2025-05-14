@@ -1,10 +1,16 @@
 package com.equipmentinventory.service.implement;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
+import com.equipmentinventory.dto.EquipmentDto;
 import com.equipmentinventory.entity.Equipment;
 import com.equipmentinventory.repository.IEquipmentRepository;
 import com.equipmentinventory.service.IEquipmentService;
@@ -13,21 +19,33 @@ import com.equipmentinventory.service.IEquipmentService;
 public class EquipmentServiceImpl implements IEquipmentService {
 
 	private final IEquipmentRepository iEquipmentRepository;
+	/*
+	 * This is the rate for the deprecation value
+	 */
+	private final BigDecimal RATE = new BigDecimal("0.04");
 
 	public EquipmentServiceImpl(IEquipmentRepository iEquipmentRepository) {
 		this.iEquipmentRepository = iEquipmentRepository;
 	}
 
 	@Override
-	public Optional<Equipment> getEquipmentById(Long id) {
-		Optional<Equipment> equipment = iEquipmentRepository.findById(id);
-		return equipment;
+	public Optional<EquipmentDto> getEquipmentById(Long id) {
+		Optional<Equipment> equipmentOpt = iEquipmentRepository.findById(id);
+		Equipment equipment = equipmentOpt.orElseThrow();
+		BigDecimal deprecatedValue = calculateDepreciation(equipment);
+
+		return Optional.ofNullable(mapToEquipmentDto(equipment, deprecatedValue));
 	}
 
 	@Override
-	public List<Equipment> gestListOfEquipment() {
 
-		return iEquipmentRepository.findAll();
+	public List<EquipmentDto> gestListOfEquipment() {
+		List<Equipment> equipments = iEquipmentRepository.findAll();
+
+		return equipments.stream().map(equipment -> {
+			BigDecimal deprecatedValue = calculateDepreciation(equipment);
+			return mapToEquipmentDto(equipment, deprecatedValue);
+		}).collect(Collectors.toList());
 	}
 
 	@Override
@@ -60,6 +78,19 @@ public class EquipmentServiceImpl implements IEquipmentService {
 			throw new NoSuchElementException("Equipment not found");
 		}
 
+	}
+
+	private BigDecimal calculateDepreciation(Equipment equipment) {
+		long years = ChronoUnit.YEARS.between(equipment.getPurchaseDate(), LocalDate.now());
+		// BigDecimal rate = new BigDecimal("0.04");
+		BigDecimal deprecation = equipment.getPurchaseValue().multiply(RATE).multiply(new BigDecimal(years));
+		BigDecimal valueDeprecate = equipment.getPurchaseValue().subtract(deprecation);
+		return valueDeprecate.max(BigDecimal.ZERO);
+	}
+
+	private EquipmentDto mapToEquipmentDto(Equipment equipment, BigDecimal deprecatedValue) {
+		return new EquipmentDto(equipment.getSerialNumber(), equipment.getName(), equipment.getDescription(),
+				equipment.getPurchaseDate(), equipment.getPurchaseValue(), deprecatedValue);
 	}
 
 }

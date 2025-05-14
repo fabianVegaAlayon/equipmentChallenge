@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.equipmentinventory.dto.EquipmentDto;
 import com.equipmentinventory.entity.Equipment;
 import com.equipmentinventory.service.IEquipmentService;
 
@@ -31,15 +32,10 @@ public class EquipmentController {
 		this.iEquipmentService = iEquipmentService;
 	}
 
-	/*
-	 * Aquí toca hacerle el ajuste para el retorno con la info relacionada con el
-	 * dto que nos retornará el calculo de la depreciación
-	 * 
-	 */
 
 	@GetMapping
-	public ResponseEntity<List<Equipment>> findAll() {
-		List<Equipment> equipmentList = iEquipmentService.gestListOfEquipment();
+	public ResponseEntity<List<EquipmentDto>> findAll() {
+		List<EquipmentDto> equipmentList = iEquipmentService.gestListOfEquipment();
 		if (equipmentList.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		} else {
@@ -48,13 +44,10 @@ public class EquipmentController {
 
 	}
 
-	/*
-	 * Revisar lo que puede retornar al estar forzando el estatus y la
-	 * excepcion que se lanza en el servicio 
-	 * */
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findEquipmentById(@PathVariable Long id) {
-		Optional<Equipment> equipment = iEquipmentService.getEquipmentById(id);
+		Optional<EquipmentDto> equipment = iEquipmentService.getEquipmentById(id);
 		if (equipment.isPresent()) {
 
 			return ResponseEntity.ok(equipment);

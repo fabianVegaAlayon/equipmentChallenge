@@ -3,8 +3,6 @@ package com.equipmentinventory.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import org.hibernate.annotations.Table;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +11,6 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @Entity
@@ -31,8 +28,5 @@ public class Equipment {
 	private LocalDate purchaseDate;
 	@Column(name = "purchase_value")
 	private BigDecimal purchaseValue;
-	
-	
-	
-	
+
 }
