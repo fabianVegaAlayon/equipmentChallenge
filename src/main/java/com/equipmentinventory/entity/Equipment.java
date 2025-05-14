@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Equipment {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "serial_number")
 	private long serialNumber;
 	private String name;

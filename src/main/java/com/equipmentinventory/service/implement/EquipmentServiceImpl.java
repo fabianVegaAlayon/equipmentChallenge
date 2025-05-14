@@ -31,10 +31,15 @@ public class EquipmentServiceImpl implements IEquipmentService {
 	@Override
 	public Optional<EquipmentDto> getEquipmentById(Long id) {
 		Optional<Equipment> equipmentOpt = iEquipmentRepository.findById(id);
-		Equipment equipment = equipmentOpt.orElseThrow();
-		BigDecimal deprecatedValue = calculateDepreciation(equipment);
+		if (equipmentOpt.isPresent()) {
+			Equipment equipment = equipmentOpt.orElseThrow();
+			BigDecimal deprecatedValue = calculateDepreciation(equipment);
 
-		return Optional.ofNullable(mapToEquipmentDto(equipment, deprecatedValue));
+			return Optional.ofNullable(mapToEquipmentDto(equipment, deprecatedValue));
+		} else {
+			throw new NoSuchElementException("The equipment " + id + " doesn't exist.");
+		}
+
 	}
 
 	@Override

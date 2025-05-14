@@ -1,0 +1,2 @@
+INSERT INTO equipment (name, description, purchase_date, purchase_value) values('Benq', 'Monitor','2022-04-12', 30000);
+INSERT INTO equipment (name, description, purchase_date, purchase_value) values('Lenovo', 'Computador de mesa','2025-05-13', 50000);
