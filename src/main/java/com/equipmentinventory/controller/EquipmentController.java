@@ -49,10 +49,11 @@ public class EquipmentController {
 	public ResponseEntity<?> findEquipmentById(@PathVariable Long id) {
 		Optional<EquipmentDto> equipment = iEquipmentService.getEquipmentById(id);
 		if (equipment.isPresent()) {
-
 			return ResponseEntity.ok(equipment);
+			
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			
 		}
 
 	}

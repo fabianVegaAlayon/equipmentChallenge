@@ -19,7 +19,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.http.ResponseEntity;
 
-import static  com.equipmentinventory.TestData.*;
 import com.equipmentinventory.dto.EquipmentDto;
 import com.equipmentinventory.entity.Equipment;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -153,6 +152,48 @@ class EquipmentControllerTest {
 		assertEquals(2, equipmentList.size());
 		
 	}
+	
+	@Order(6)
+	@Test
+	void testGetAllWithEmptyList() 
+	{
+		
+		ResponseEntity<String> request = testRestTemplate.exchange(
+				"http://localhost:" +port + "/api/equipment/1",
+				HttpMethod.DELETE,
+				null, 
+				String.class);
+		
+		
+		request = testRestTemplate.exchange(
+				"http://localhost:" +port + "/api/equipment/2",
+				HttpMethod.DELETE,
+				null, 
+				String.class);
+		
+		request = testRestTemplate.exchange(
+				"http://localhost:" +port + "/api/equipment/3",
+				HttpMethod.DELETE,
+				null, 
+				String.class);
+		
+		ResponseEntity<EquipmentDto[]> response = testRestTemplate.getForEntity("http://localhost:" +port + "/api/equipment", EquipmentDto[].class);
+		assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+		assertNull(response.getBody());
+		
+		
+	} 
+	
+	@Order(7)
+	@Test
+	void testFindByIdWithEmptyTable()
+	{
+		ResponseEntity<String> response = testRestTemplate.getForEntity("http://localhost:" +port + "/api/equipment/2", String.class);
+		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+		assertTrue(response.getBody().contains("The equipment 2 doesn't exist."));
+		
+	}
+	
 	
 	
 	

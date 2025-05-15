@@ -21,14 +21,7 @@ public class TestData {
 		return Optional.of(new Equipment(1L, "Lenovo", "Computador de mesa",  LocalDate.of(2025,5,13), new BigDecimal("50000")));
 	}
 	
-	public static Optional<Equipment> createEquipment002()
-	{
-		return Optional.of(new Equipment(1L, "Benq", "Monitor",  LocalDate.of(2022,4,12), new BigDecimal("30000")));
-	}
-	
-	
-	
-	
+
 	public static List<Equipment> createListEquipment()
 	{
 		return Arrays.asList(new Equipment(1L, "Lenovo", "Computador de mesa",  LocalDate.of(2025,5,13), new BigDecimal("50000")),

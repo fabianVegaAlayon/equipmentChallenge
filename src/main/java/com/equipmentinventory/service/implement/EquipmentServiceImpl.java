@@ -85,6 +85,14 @@ public class EquipmentServiceImpl implements IEquipmentService {
 
 	}
 
+	/**
+	 * This method allow us calculate the depreciation of an equipment
+	 * the formula applied is: depreciation = (purchaseValue*rate)*years
+	 * value deprecate = purchaseValue - depreciation
+	 * @param equipment
+	 * @return if valueDeprecate is negative, the result will be BigDecimal.ZERO, 
+	 * thus avoiding negative values; if positive, returns valueDeprecate as is
+	 */
 	private BigDecimal calculateDepreciation(Equipment equipment) {
 		long years = ChronoUnit.YEARS.between(equipment.getPurchaseDate(), LocalDate.now());
 		// BigDecimal rate = new BigDecimal("0.04");
