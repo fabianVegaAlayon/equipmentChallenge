@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Schema(description = "This model is used to return errors in RFC 7807 which created a generalized  error-hanbdling schema composed by five parts")
+@Schema(description = "This model is used to return errors in RFC 7807 which created a generalized  error-hanbdling schema composed by four parts")
 @NoArgsConstructor
 @Data
 public class StandarizeApiExceptionResponse {
